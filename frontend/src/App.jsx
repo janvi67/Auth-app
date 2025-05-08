@@ -4,6 +4,7 @@ import { Routes, Route,Link } from "react-router-dom";
 import CustomerRegister from "./pages/CustomerRegister"
 import AdminRegister from "./pages/AdminRegister";
 import Login from "./pages/Login";
+import AdminDashboard from "./pages/AdminDashboard";
 function App() {
  
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/register/customer" element={ <CustomerRegister/> } />
         <Route path="/register/admin" element={ <AdminRegister /> } />
         <Route path="/login" element={ <Login /> } />
+        <Route path="/adminDashboard" element={ <AdminDashboard /> } />
        
       
       </Routes>

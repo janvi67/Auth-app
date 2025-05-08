@@ -1,47 +1,49 @@
-import React from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import axios from 'axios';
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().email('Invalid email address').required('Email is required'),
-      password: Yup.string().required('Password is required'),
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("Email is required"),
+      password: Yup.string().required("Password is required"),
     }),
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
-        const response = await axios.post('http://localhost:3000/api/auth/login', values);
-      
+        const response = await axios.post(
+          "http://localhost:3000/api/auth/login",
+          values
+        );
+
         console.log(response.data);
-        toast.success(response.data.msg);
+        toast.success(response.data.message);
+        navigate("/adminDashboard");
         resetForm();
       } catch (error) {
         if (error.response?.data?.message) {
-            toast.error(
-                error?.response?.data?.msg || "Login failed.",
-               
-              );
+          toast.error(error?.response?.data?.msg || "Login failed.");
         } else {
-            toast.error(
-                error?.response?.data?.msg || "Login failed.",
-           
-              );
+          toast.error(error?.response?.data?.msg || "Login failed.");
         }
       } finally {
         setSubmitting(false);
       }
-    }
+    },
   });
 
   return (
     <section className="bg-light p-3 p-md-4 p-xl-5">
-    <Toaster/>
+      <Toaster />
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-12 col-xxl-11">
@@ -66,7 +68,11 @@ function Login() {
                             type="email"
                             id="email"
                             name="email"
-                            className={`form-control ${formik.touched.email && formik.errors.email ? 'is-invalid' : ''}`}
+                            className={`form-control ${
+                              formik.touched.email && formik.errors.email
+                                ? "is-invalid"
+                                : ""
+                            }`}
                             placeholder="name@example.com"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -74,7 +80,9 @@ function Login() {
                           />
                           <label htmlFor="email">Email</label>
                           {formik.touched.email && formik.errors.email && (
-                            <div className="invalid-feedback">{formik.errors.email}</div>
+                            <div className="invalid-feedback">
+                              {formik.errors.email}
+                            </div>
                           )}
                         </div>
 
@@ -83,35 +91,67 @@ function Login() {
                             type="password"
                             id="password"
                             name="password"
-                            className={`form-control ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`}
+                            className={`form-control ${
+                              formik.touched.password && formik.errors.password
+                                ? "is-invalid"
+                                : ""
+                            }`}
                             placeholder="Password"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.password}
                           />
                           <label htmlFor="password">Password</label>
-                          {formik.touched.password && formik.errors.password && (
-                            <div className="invalid-feedback">{formik.errors.password}</div>
-                          )}
+                          {formik.touched.password &&
+                            formik.errors.password && (
+                              <div className="invalid-feedback">
+                                {formik.errors.password}
+                              </div>
+                            )}
                         </div>
 
                         <div className="form-check mb-3">
-                          <input className="form-check-input" type="checkbox" value="" id="remember_me" />
-                          <label className="form-check-label" htmlFor="remember_me">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="remember_me"
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="remember_me"
+                          >
                             Keep me logged in
                           </label>
                         </div>
 
                         <div className="d-grid">
-                          <button className="btn btn-dark btn-lg" type="submit" disabled={formik.isSubmitting}>
-                            {formik.isSubmitting ? 'Logging in...' : 'Log in now'}
+                          <button
+                            className="btn btn-dark btn-lg"
+                            type="submit"
+                            disabled={formik.isSubmitting}
+                          >
+                            {formik.isSubmitting
+                              ? "Logging in..."
+                              : "Log in now"}
                           </button>
                         </div>
                       </form>
 
                       <div className="text-center mt-4">
-                        <a href="/register" className="link-secondary text-decoration-none">Create new account</a> | 
-                        <a href="#" className="link-secondary text-decoration-none ms-2">Forgot password</a>
+                        <a
+                          href="/register"
+                          className="link-secondary text-decoration-none"
+                        >
+                          Create new account
+                        </a>{" "}
+                        |
+                        <a
+                          href="#"
+                          className="link-secondary text-decoration-none ms-2"
+                        >
+                          Forgot password
+                        </a>
                       </div>
                     </div>
                   </div>
